@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 167px);
+    grid-template-rows: repeat(3, 167px);
+    border: 3px solid black;
+    width: 500px;
+    height: 500px;
+}
+
+.grid-item {
+    border: 3px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150px;
+    margin: 0;
+    padding: 0;
+}
+
+.grid-item:hover {
+    cursor: pointer;
+    background-color: lightgray;
+}
