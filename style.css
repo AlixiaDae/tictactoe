@@ -9,7 +9,10 @@ body {
 
 .main {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 20px;
 }
 
 .grid {
@@ -31,7 +34,21 @@ body {
     padding: 0;
 }
 
+#reset {
+    font-size: 50px;
+    width: 175px;
+    padding: 10px 15px 10px 15px;
+    border: 2px solid black;
+    border-radius: 15px;
+}
+
 .grid-item:hover {
     cursor: pointer;
-    background-color: lightgray;
+    background-color: rgb(224, 224, 224);
+}
+
+#reset:hover {
+    background-color: rgb(219, 219, 219);
+    font-size: 52px;
+    padding: 9px 14px 9px 14px;
 }
