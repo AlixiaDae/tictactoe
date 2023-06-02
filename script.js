@@ -1,12 +1,4 @@
-//Field eventlistener
-const field = document.querySelectorAll(".grid-item")
-
-field.forEach(field => 
-    field.addEventListener("click", (e) => {
-        console.log(e.target.dataset.index)
-})) 
-
-
+// Factory for player
 const Player = (sign) => {
     let _sign = sign
     const getSign = () => _sign
@@ -15,6 +7,8 @@ const Player = (sign) => {
         getSign
     }
 }
+
+//Module for gameboard
 
 const gameBoard = (() => {
     const _board = new Array(9)
@@ -42,31 +36,55 @@ const gameBoard = (() => {
     }
 })()
 
+//Module for DOM elements
+
 const displayController = (() => {
     const _gridField = document.querySelectorAll(".grid-item")
     const _resetButton = document.getElementById("reset")
+    const _announcement = document.querySelector(".announcement")
 
     _gridField.forEach(field => {
         field.addEventListener("click", (e) => {
             if(gameController.getIsOver() || field.textContent !== "") return
             gameController.playRound(parseInt(e.target.dataset.index))
-            updateBoard()
+            _updateBoard()
         })
     })
 
     _resetButton.addEventListener("click", () => {
         gameBoard.reset()
-        updateBoard()
+        _updateBoard()
         gameController.reset()
+        setAnnouncementText("It is player X's turn.")
     })
 
-    const updateBoard = () => {
+    const _updateBoard = () => {
         for(let i = 0; i < _gridField.length; i++) {
             _gridField[i].textContent = gameBoard.getField(i)
         }
     }
 
+    const setAnnouncement = (winner) => {
+        if(winner === "Draw") {
+            setAnnouncementText("It's a draw!")
+        } else {
+            _announcement.textContent = ""
+            setAnnouncementText(`Player ${winner} wins!`)
+        }
+    }
+
+    const setAnnouncementText = (text) => {
+        _announcement.textContent = text
+    }
+
+    return {
+        setAnnouncement,
+        setAnnouncementText
+    }
+
 })()
+
+//Module for game logic
 
 const gameController = (() => {
     const playerX = Player("X")
@@ -81,15 +99,19 @@ const gameController = (() => {
     const playRound = (fieldindex) => {
         gameBoard.setField(fieldindex, getCurrentPlayer())
         if(_checkWinner(fieldindex)) {
-            _isOver = true
-            console.log(`Winner is ${getCurrentPlayer()}`)
+            displayController.setAnnouncement(getCurrentPlayer())
+            _isOver = true        
             return
         }
         if(_round === 9) {
+            displayController.setAnnouncement("Draw")
             _isOver = true
             return
         }
         _round++
+        displayController.setAnnouncementText(
+            `It is player ${getCurrentPlayer()}'s turn.`
+        )
     }
 
     const _checkWinner = (fieldindex) => {
